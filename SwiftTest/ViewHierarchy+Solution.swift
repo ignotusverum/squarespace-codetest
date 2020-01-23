@@ -19,7 +19,7 @@ extension Node {
             guard let dequeuedNode = queue.dequeue() else { break }
             if dequeuedNode.frame.contains(pixel) { result.append(dequeuedNode) }
             
-            let childrenIntersected = getTopChildrenIntersection(for: dequeuedNode.children,
+            let childrenIntersected = getTopChildrenIntersection(for: dequeuedNode,
                                                                  in: pixel)
             
             queue.enqueue(childrenIntersected)
@@ -28,9 +28,9 @@ extension Node {
         return result
     }
     
-    static private func getTopChildrenIntersection(for children: [Node],
+    static private func getTopChildrenIntersection(for node: Node,
                                                    in pixel: CGPoint)-> [Node] {
-        children.reduce([] as [Node]) { result, element in
+        node.children.reduce([] as [Node]) { result, element in
             let (isChildrenIntersect, topIntersectionNode) = checkIfChildrenIntersect(nodes: result,
                                                                                       currentElement: element,
                                                                                       pixel: pixel)
@@ -48,9 +48,7 @@ extension Node {
                                                  pixel: CGPoint)-> (Bool, Node?) {
         var tempNode: Node?
         let checkCondition = nodes.contains(where: { resultElement in
-            if currentElement.frame.intersects(resultElement.frame),
-                currentElement.frame.contains(pixel),
-                resultElement.frame.contains(pixel) {
+            if currentElement.frame.contains(pixel) {
                 tempNode = currentElement
                 
                 return true
