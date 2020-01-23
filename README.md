@@ -1,2 +1,0 @@
-# squarespace-codetest
-Squarespace codetest
